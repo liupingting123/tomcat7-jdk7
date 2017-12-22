@@ -3,7 +3,7 @@ FROM openshift/base-centos7
 MAINTAINER Ed Veretinskas <ed@mits4u.co.uk>
 
 # Inform about software versions being used inside the builder
-ENV TOMCAT_VERSION=7.0.77 \
+ENV TOMCAT_VERSION=7.0.82 \
     TOMCAT_MAJOR=7 \
     MAVEN_VERSION="3.3.9" \
     M2_HOME="/usr/local/apache-maven/apache-maven-3.3.9" \
