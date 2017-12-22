@@ -8,11 +8,6 @@ fi
 
 JAR=`ls ${APP_ROOT}/*.jar`
 
-if [ "$JOLOKIA_ENABLED" = "true" ]
-then
-    echo "Jolokia enabled, starting jolokia java agent"
-    JOLOKIA_ARGS="-javaagent:/opt/jolokia/jolokia.jar=config=/opt/jolokia/etc/jolokia.properties"
-fi
 
 if [ "$DEBUG" = "true" ]
 then
