@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+S2I_SOURCE_DIR="/tmp/src"
+
+echo "PATH = $PATH"
+
+echo "---> Building application from source ${S2I_SOURCE_DIR}"
+cd ${S2I_SOURCE_DIR}
+mvn clean package
+
+echo "---> copying JARs over to /${APP_ROOT}"
+cp -f ${S2I_SOURCE_DIR}/target/*jar /${APP_ROOT}/
