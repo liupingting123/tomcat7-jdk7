@@ -4,14 +4,12 @@ MAINTAINER Ed Veretinskas <ed@mits4u.co.uk>
 
 # Inform about software versions being used inside the builder
 ENV MAVEN_VERSION="3.3.9" \
-    JAVA_VERSION="1.7" \
-    JAVA_HOME="/usr/java/jdk1.7/jre" \
     M2_HOME="/usr/local/apache-maven/apache-maven-3.3.9" \
-	CATALINA_HOME="/usr/local/tomcat" \
+    CATALINA_HOME="/usr/local/tomcat" \
     APP_ROOT="/opt/app-root/" \
     DEBUG="false"
 
-ENV PATH="${PATH}:${M2_HOME}/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin"
+ENV PATH="${PATH}:${M2_HOME}/bin:${CATALINA_HOME}/bin"
 #RUN mkdir -p "$CATALINA_HOME"
 # Set labels used in OpenShift to describe the builder images
 LABEL   io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
@@ -23,9 +21,7 @@ LABEL   io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
         java.vendor="mits4u.co.uk"
 
 # Install JAVA_VERSION
-RUN wget http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-x64.rpm \
- && rpm -ivh jdk-7-linux-x64.rpm \
- && rm -rf jdk-7-linux-x64.rpm
+RUN yum install -y java-1.7.0-openjdk 
 
 
 # Install Maven
