@@ -23,9 +23,9 @@ LABEL   io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
         java.vendor="mits4u.co.uk"
 
 # Install JAVA_VERSION
-RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn/java/jdk/7u80-b15/jdk-7u80-linux-x64.rpm" \
- && rpm -ivh jdk-7u80-linux-x64.rpm \
- && rm -rf jdk-7u80-linux-x64.rpm
+RUN wget http://download.oracle.com/otn-pub/java/jdk/7/jdk-7-linux-x64.rpm \
+ && rpm -ivh jdk-7-linux-x64.rpm \
+ && rm -rf jdk-7-linux-x64.rpm
 
 
 # Install Maven
