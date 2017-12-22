@@ -2,26 +2,26 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "springboot-s2i-template",
+    "name": "tomcat7-jdk7-template",
     "annotations": {
       "iconClass": "icon-openjdk",
-      "description": "Template to create springboot-s2i builder image"
+      "description": "Template to create tomcat7-jdk7 builder image"
     }
   },
   "labels": {
-    "app": "springboot-s2i",
-    "application": "springboot-s2i"
+    "app": "tomcat7-jdk7",
+    "application": "tomcat7-jdk7"
   },
   "parameters": [
     {
       "description": "Name",
       "name": "APPLICATION_NAME",
-      "value": "springboot-s2i"
+      "value": "tomcat7-jdk7"
     },
     {
       "description": "Version",
       "name": "JAVA_VERSION_PARAM",
-      "value": "1.8.0_131"
+      "value": "1.7"
     },
     {
       "description": "Base Image",
@@ -32,7 +32,7 @@
       "name": "SOURCE_REPOSITORY_URL",
       "displayName": "Source Repository URL",
       "description": "The URL pointing to the repo where the DockerFile exists",
-      "value": "https://github.com/veretie/openshift-springboot-s2i.git",
+      "value": "https://github.com/liupingting123/tomcat7-jdk7.git",
       "required": true
     }
   ],
@@ -88,7 +88,7 @@
               "description": "Java Source to Image for springboot apps",
               "iconClass": "icon-openjdk",
               "sampleRepo": "https://github.com/veretie/prime-numbers.git",
-              "supports": "java:8",
+              "supports": "java:7",
               "tags": "builder,javas2i,java"
             }
           }

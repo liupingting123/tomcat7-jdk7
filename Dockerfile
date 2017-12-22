@@ -4,42 +4,29 @@ MAINTAINER Ed Veretinskas <ed@mits4u.co.uk>
 
 # Inform about software versions being used inside the builder
 ENV MAVEN_VERSION="3.3.9" \
-    JAVA_VERSION="1.8.0_131" \
-    JAVA_HOME="/usr/java/jdk1.8.0_131/jre" \
+    JAVA_VERSION="1.7" \
+    JAVA_HOME="/usr/java/jdk1.7/jre" \
     M2_HOME="/usr/local/apache-maven/apache-maven-3.3.9" \
-    JOLOKIA_VERSION="1.3.5" \
-    JOLOKIA_ENABLED="false" \
-    JOLOKIA_HOME="/opt/jolokia/" \
+	CATALINA_HOME="/usr/local/tomcat" \
     APP_ROOT="/opt/app-root/" \
     DEBUG="false"
 
-ENV PATH="${PATH}:${M2_HOME}/bin:${JAVA_HOME}/bin"
-
+ENV PATH="${PATH}:${M2_HOME}/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin"
+#RUN mkdir -p "$CATALINA_HOME"
 # Set labels used in OpenShift to describe the builder images
 LABEL   io.openshift.s2i.scripts-url="image:///usr/local/s2i" \
-        io.openshift.tags="builder,java,springboots2i" \
-        summary="Builder image for creating Spring Boot micro-services" \
-        name="openshift-springboot-s2i" \
+        io.openshift.tags="builder,java,tomcat7-jdk7" \
+        summary="Builder image for creating tomcat7-jdk7 micro-services" \
+        name="openshift-tomcat7-jdk7" \
         java.version="${JAVA_VERSION}" \
         java.architecture="x86_64" \
         java.vendor="mits4u.co.uk"
 
 # Install JAVA_VERSION
-RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm" \
- && rpm -ivh jdk-8u131-linux-x64.rpm \
- && rm -rf jdk-8u131-linux-x64.rpm
+RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn/java/jdk/7u80-b15/jdk-7u80-linux-x64.rpm" \
+ && rpm -ivh jdk-7u80-linux-x64.rpm \
+ && rm -rf jdk-7u80-linux-x64.rpm
 
-# Install the Java JCE Policy
-RUN curl -q -L -C - -b "oraclelicense=accept-securebackup-cookie" -o /tmp/jce_policy-8.zip -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
- && unzip -oj -d /usr/java/jdk1.8.0_131/jre/lib/security /tmp/jce_policy-8.zip \*/\*.jar \
- && rm /tmp/jce_policy-8.zip
-
-# Jolokia agent
-RUN mkdir -p /opt/jolokia/etc \
- && curl http://central.maven.org/maven2/org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar \
-         -o /opt/jolokia/jolokia.jar
-ADD jolokia /opt/jolokia/
-RUN chmod 775 -R /opt/jolokia
 
 # Install Maven
 RUN curl -O http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
@@ -47,6 +34,13 @@ RUN curl -O http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/a
  && rm -rf apache-maven-${MAVEN_VERSION}-bin.tar.gz \
  && chmod 775 -R /usr/local/apache-maven
 
+# install tomcat 
+RUN curl -O https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz \
+ && mkdir -p ${CATALINA_HOME} && tar zxvf apache-tomcat-$TOMCAT_VERSION.tar.gz -C /usr/local/tomcat \
+ && rm -rf apache-tomcat-$TOMCAT_VERSION.tar.gz \
+ && chmod 775 -R /usr/local/tomcat
+ 
+ 
 # Copy the S2I scripts from ./.s2i/bin/ to /usr/local/s2i when making the builder image
 COPY ./.s2i/bin/ /usr/local/s2i
 RUN chmod -R 755 /usr/local/s2i
